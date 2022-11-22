@@ -1,10 +1,18 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.useGlobalPipes(
+    new ValidationPipe({
+      // disableErrorMessages: true,
+      // whitelist: true,
+      // forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
   const config = new DocumentBuilder()
     .setTitle('Cats example')
     .setDescription('The cats API description')
