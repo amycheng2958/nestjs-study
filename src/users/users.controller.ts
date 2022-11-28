@@ -1,20 +1,31 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { LoginResDto, LoginUserDto } from './dot/loginUser.dto';
-
+import { Request, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'src/auth/auth.service';
+import { LoginUserDto } from './dot/loginUser.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private authService: AuthService,
+  ) {}
 
+  @UseGuards(AuthGuard('local'))
   @Post('/login')
-  async login(@Body() loginUserDto: LoginUserDto): Promise<LoginResDto> {
-    console.log(1);
-    const res = await this.usersService.findOne(loginUserDto);
-    return Promise.resolve({
-      token: 'd',
-      ...res,
-    });
+  async login(@Request() req) {
+    return this.authService.login(req.user);
+    // const res = await this.usersService.findOne(loginUserDto);
+    // return Promise.resolve({
+    //   token: 'd',
+    //   ...res,
+    // });
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 
   @Get()

@@ -3,7 +3,7 @@ import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
-  findOne(loginUserDto): Promise<User> {
+  findOne(username: string): Promise<User> {
     return Promise.resolve({
       id: 1,
       username: 'd',
