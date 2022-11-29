@@ -20,6 +20,14 @@ export class UsersService {
     });
   }
 
+  async findMany() {
+    return await this.prisma.user.findMany({
+      include: {
+        Role: true,
+      },
+    });
+  }
+
   async update(data: UpdateUserDto, id: number) {
     return await this.prisma.user.update({
       where: { id },

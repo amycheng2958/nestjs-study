@@ -55,4 +55,9 @@ export class UsersController {
   async delete(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.delete(id);
   }
+
+  @Get()
+  async findMany() {
+    return this.usersService.findMany();
+  }
 }
