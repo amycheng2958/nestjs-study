@@ -7,9 +7,10 @@ import { AuthModule } from './auth/auth.module';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { RoleModule } from './role/role.module';
 
 @Module({
-  imports: [UsersModule, PrismaModule, AuthModule],
+  imports: [UsersModule, PrismaModule, AuthModule, RoleModule],
   controllers: [AppController],
   providers: [AppService, AuthService, JwtService, PrismaService],
 })

@@ -16,7 +16,7 @@ export class AuthService {
     username: string,
     password: string,
   ): Promise<Omit<User, 'password'>> | null {
-    const user = await this.usersService.findOne(username);
+    const user = await this.usersService.findOne({ username });
     if (!user) {
       return null;
     }
@@ -29,9 +29,8 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { username: user.username, sub: user.id };
-    console.log(process.env.JWT_SECRET);
-
     return {
+      ...user,
       access_token: this.jwtService.sign(payload, {
         secret: process.env.JWT_SECRET,
       }),
