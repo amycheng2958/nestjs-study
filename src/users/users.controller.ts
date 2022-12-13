@@ -1,5 +1,4 @@
 import {
-  Request,
   Controller,
   Get,
   Post,
@@ -8,15 +7,15 @@ import {
   BadRequestException,
   Put,
   Param,
-  ParseIntPipe,
   Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation } from '@nestjs/swagger';
 import { AuthService } from 'src/auth/auth.service';
-import { CreateUserDto, ResUserHasToken, UpdateUserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('users')
 export class UsersController {
   constructor(
@@ -36,24 +35,19 @@ export class UsersController {
     return this.usersService.create(userData);
   }
 
-  @ApiOperation({ summary: '用户登录' })
-  @UseGuards(AuthGuard('local'))
-  @Post('/login')
-  async login(@Request() req): Promise<ResUserHasToken> {
-    return this.authService.login(req.user);
-  }
-
   @Put(':id')
-  async update(
-    @Body() userData: UpdateUserDto,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
+  async update(@Body() userData: UpdateUserDto, @Param('id') id: string) {
     return this.usersService.update(userData, id);
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
+  async delete(@Param('id') id: string) {
     return this.usersService.delete(id);
+  }
+
+  @Delete()
+  async deleteMany() {
+    return this.usersService.deleteMany();
   }
 
   @Get()

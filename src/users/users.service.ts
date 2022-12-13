@@ -23,21 +23,24 @@ export class UsersService {
   async findMany() {
     return await this.prisma.user.findMany({
       include: {
-        Role: true,
+        role: true,
       },
     });
   }
 
-  async update(data: UpdateUserDto, id: number) {
+  async update(data: UpdateUserDto, id: string) {
     return await this.prisma.user.update({
       where: { id },
       data,
     });
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     return await this.prisma.user.delete({
       where: { id },
     });
+  }
+  async deleteMany() {
+    return await this.prisma.user.deleteMany();
   }
 }

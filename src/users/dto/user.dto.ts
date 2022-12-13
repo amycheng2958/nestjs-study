@@ -30,7 +30,7 @@ export class CreateUserDto {
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
 
 export class ResUser implements User {
-  id: number;
+  id: string;
   username: string;
   password: string;
   email: string;
@@ -42,7 +42,7 @@ export class ResUser implements User {
 }
 
 export class ResUserHasToken implements User {
-  id: number;
+  id: string;
   username: string;
   password: string;
   email: string;

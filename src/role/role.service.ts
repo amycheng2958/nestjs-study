@@ -7,7 +7,20 @@ export class RoleService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findMany() {
-    return await this.prisma.role.findMany();
+    return await this.prisma.role.findMany({
+      include: {
+        access: true,
+      },
+    });
+  }
+
+  async findUnique(id: number) {
+    return await this.prisma.role.findUnique({
+      where: { id },
+      include: {
+        access: true,
+      },
+    });
   }
 
   async create(data: CreateRoleDto) {
@@ -31,7 +44,22 @@ export class RoleService {
       },
     });
   }
+
   async update(data: UpdateRoleDto, id: number) {
-    return await this.prisma.role.update({ where: { id }, data });
+    // 如果access的id在权限表中不存在，会出错，怎么处理错误
+    const { access = [] } = data;
+    return await this.prisma.role.update({
+      where: { id },
+      data: {
+        access: {
+          connect: access.map((item) => ({
+            id: item.id,
+          })),
+        },
+      },
+      include: {
+        access: true,
+      },
+    });
   }
 }

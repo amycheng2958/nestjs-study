@@ -8,9 +8,11 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiOperation } from '@nestjs/swagger';
 import { CreateRoleDto, UpdateRoleDto } from './dto/role.dto';
 import { RoleService } from './role.service';
 
@@ -45,5 +47,11 @@ export class RoleController {
     @Param('id', ParseIntPipe) id: number,
   ) {
     return this.roleService.update(data, id);
+  }
+
+  @ApiOperation({ summary: '获取角色权限' })
+  @Get('auth')
+  async GetAccessList(@Query('id', ParseIntPipe) id: number) {
+    return this.roleService.findUnique(id);
   }
 }
