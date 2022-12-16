@@ -7,9 +7,9 @@ export class OssService {
   constructor() {
     this.client = new OSS({
       region: 'oss-cn-hangzhou',
-      accessKeyId: 'LTAI5tJpwPUhsKX7JHpWAc7k',
-      accessKeySecret: 'txvCZQcEvztPB3fXicW5SdOclIShx3',
-      bucket: 'example-cyy',
+      accessKeyId: process.env.ACCESSKEY_ID,
+      accessKeySecret: process.env.ACCESSKEY_SECRET,
+      bucket: process.env.BUCKET,
     });
   }
   async listBuckets() {

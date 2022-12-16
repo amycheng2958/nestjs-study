@@ -19,7 +19,7 @@ export class FilesValidationPipePipe implements PipeTransform {
       if (file.size > maxSize) {
         throw new NotAcceptableException('文件不能大于5M！');
       }
-      return true;
+      return value;
     }
   }
 }
